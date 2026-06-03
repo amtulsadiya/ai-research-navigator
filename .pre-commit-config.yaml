@@ -1,0 +1,32 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        args: [--strict]
+        additional_dependencies:
+          - pydantic-settings
+          - structlog
+        files: ^src/
+
+  # - repo: https://github.com/gitleaks/gitleaks
+  #   rev: v8.18.3
+  #   hooks:
+  #     - id: gitleaks
+  #       exclude: |
+  #         (?x)^(
+  #           \.venv/.*|
+  #           uv\.lock|
+  #           .*\.lock
+  #         )$
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.3
+    hooks:
+      - id: gitleaks

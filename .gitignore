@@ -1,1 +1,3 @@
 .venv/
+# Corpus documents (large files, not ours to redistribute)
+corpus/documents/

@@ -15,6 +15,7 @@ dependencies = [
     "tiktoken>=0.7.0",
     "tenacity>=8.0.0",
     "rich>=13.0.0",
+    "sentence-transformers>=5.5.1",
 ]
 
 [project.optional-dependencies]
@@ -51,6 +52,19 @@ python_version = "3.11"
 strict = true
 mypy_path = "src"
 packages = ["research_navigator"]
+plugins = ["pydantic.mypy"]
+warn_unused_ignores = false
+
+[[tool.mypy.overrides]]
+module = [
+    "fitz",
+    "tiktoken",
+    "sentence_transformers",
+    "qdrant_client",
+    "qdrant_client.http",
+    "qdrant_client.http.models",
+]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -59,3 +73,5 @@ addopts = "--cov=src/research_navigator --cov-report=term-missing"
 
 [tool.coverage.run]
 source = ["src/research_navigator"]
+
+

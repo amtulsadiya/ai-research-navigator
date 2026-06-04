@@ -10,12 +10,11 @@ repos:
     rev: v1.10.0
     hooks:
       - id: mypy
-        args: [--strict]
+        args: [--strict, --no-warn-unused-ignores]
         additional_dependencies:
           - pydantic-settings
           - structlog
         files: ^src/
-
   # - repo: https://github.com/gitleaks/gitleaks
   #   rev: v8.18.3
   #   hooks:

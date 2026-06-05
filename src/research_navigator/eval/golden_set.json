@@ -1,0 +1,326 @@
+{
+  "version": "1.0",
+  "description": "Golden evaluation set for AI Research Navigator M4",
+  "questions": [
+    {
+      "id": "q001",
+      "route": "concept_explanation",
+      "query": "What is the attention mechanism in transformers?",
+      "expected_doc_ids": ["arxiv-1706.03762", "hf-nlp-ch01"],
+      "expected_sections": ["Abstract", "Attention layers"],
+      "should_refuse": false
+    },
+    {
+      "id": "q002",
+      "route": "concept_explanation",
+      "query": "How does RLHF work for fine-tuning language models?",
+      "expected_doc_ids": ["arxiv-2203.02155", "arxiv-2307.09288"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q003",
+      "route": "concept_explanation",
+      "query": "What is retrieval augmented generation?",
+      "expected_doc_ids": ["arxiv-2005.11401"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q004",
+      "route": "concept_explanation",
+      "query": "How does chain of thought prompting work?",
+      "expected_doc_ids": ["arxiv-2201.11903"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q005",
+      "route": "concept_explanation",
+      "query": "What is instruction tuning for language models?",
+      "expected_doc_ids": ["arxiv-2203.02155"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q006",
+      "route": "concept_explanation",
+      "query": "Explain self-attention in transformers",
+      "expected_doc_ids": ["arxiv-1706.03762", "hf-nlp-ch01"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q007",
+      "route": "concept_explanation",
+      "query": "What are embeddings in NLP?",
+      "expected_doc_ids": ["hf-nlp-ch01", "hf-nlp-ch02"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q008",
+      "route": "paper_deep_dive",
+      "query": "What are the key contributions of the Attention Is All You Need paper?",
+      "expected_doc_ids": ["arxiv-1706.03762"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q009",
+      "route": "paper_deep_dive",
+      "query": "Summarize the Llama 2 paper",
+      "expected_doc_ids": ["arxiv-2307.09288"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q010",
+      "route": "paper_deep_dive",
+      "query": "What does the BERT paper propose?",
+      "expected_doc_ids": ["arxiv-1810.04805"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q011",
+      "route": "paper_deep_dive",
+      "query": "Tell me about the GPT-3 paper and its key findings",
+      "expected_doc_ids": ["arxiv-2005.14165"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q012",
+      "route": "paper_deep_dive",
+      "query": "What is the RAG paper about?",
+      "expected_doc_ids": ["arxiv-2005.11401"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q013",
+      "route": "compare_approaches",
+      "query": "Compare RLHF and DPO for LLM alignment",
+      "expected_doc_ids": ["arxiv-2203.02155", "arxiv-2402.01306"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q014",
+      "route": "compare_approaches",
+      "query": "What is the difference between GPT and BERT?",
+      "expected_doc_ids": ["arxiv-2005.14165", "arxiv-1810.04805"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q015",
+      "route": "compare_approaches",
+      "query": "Compare RAG and fine-tuning for knowledge injection",
+      "expected_doc_ids": ["arxiv-2005.11401"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q016",
+      "route": "recent_developments",
+      "query": "What are the latest developments in LLM reasoning?",
+      "expected_doc_ids": ["arxiv-2501.12948", "arxiv-2412.19437"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q017",
+      "route": "recent_developments",
+      "query": "What is new in LLM agents research in 2024?",
+      "expected_doc_ids": ["arxiv-2404.02060"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q018",
+      "route": "recent_developments",
+      "query": "Recent work on efficient LLM inference",
+      "expected_doc_ids": ["arxiv-2407.08608", "arxiv-2401.04088"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q019",
+      "route": "find_papers",
+      "query": "Recommend foundational papers on transformers for beginners",
+      "expected_doc_ids": ["arxiv-1706.03762", "arxiv-1810.04805"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q020",
+      "route": "find_papers",
+      "query": "What papers should I read to understand RLHF?",
+      "expected_doc_ids": ["arxiv-2203.02155", "arxiv-2307.09288"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q021",
+      "route": "find_papers",
+      "query": "Give me a reading list on LLM alignment and safety",
+      "expected_doc_ids": ["arxiv-2203.02155", "arxiv-2210.03629"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q022",
+      "route": "concept_explanation",
+      "query": "How does the transformer encoder work?",
+      "expected_doc_ids": ["arxiv-1706.03762", "hf-nlp-ch01"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q023",
+      "route": "concept_explanation",
+      "query": "What is scaling law in language models?",
+      "expected_doc_ids": ["arxiv-2203.02155", "arxiv-2005.14165"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q024",
+      "route": "concept_explanation",
+      "query": "What is reinforcement learning from AI feedback?",
+      "expected_doc_ids": ["arxiv-2212.08073"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q025",
+      "route": "concept_explanation",
+      "query": "How does tokenization work in NLP?",
+      "expected_doc_ids": ["hf-nlp-ch02", "hf-nlp-ch06"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q026",
+      "route": "paper_deep_dive",
+      "query": "What is the constitutional AI paper about?",
+      "expected_doc_ids": ["arxiv-2212.08073"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q027",
+      "route": "paper_deep_dive",
+      "query": "Explain the DeepSeek R1 paper",
+      "expected_doc_ids": ["arxiv-2501.12948"],
+      "expected_sections": ["Abstract"],
+      "should_refuse": false
+    },
+    {
+      "id": "q028",
+      "route": "compare_approaches",
+      "query": "Compare dense retrieval and sparse BM25 for information retrieval",
+      "expected_doc_ids": ["arxiv-2005.11401"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q029",
+      "route": "recent_developments",
+      "query": "Latest research on multimodal language models 2024",
+      "expected_doc_ids": ["arxiv-2403.05530"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q030",
+      "route": "find_papers",
+      "query": "Papers on prompt engineering and in-context learning",
+      "expected_doc_ids": ["arxiv-2005.14165", "arxiv-2201.11903"],
+      "expected_sections": [],
+      "should_refuse": false
+    },
+    {
+      "id": "q031",
+      "route": "out_of_scope",
+      "query": "What is the best pizza recipe?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q032",
+      "route": "out_of_scope",
+      "query": "How do I fix my car engine?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q033",
+      "route": "out_of_scope",
+      "query": "What is the weather in Mumbai today?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q034",
+      "route": "out_of_scope",
+      "query": "How to cook biryani at home?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q035",
+      "route": "out_of_scope",
+      "query": "Who won the cricket world cup?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q036",
+      "route": "out_of_scope",
+      "query": "What are good investment strategies?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q037",
+      "route": "out_of_scope",
+      "query": "How to learn guitar?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q038",
+      "route": "out_of_scope",
+      "query": "Best movies to watch in 2024?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q039",
+      "route": "out_of_scope",
+      "query": "How to lose weight fast?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    },
+    {
+      "id": "q040",
+      "route": "out_of_scope",
+      "query": "What is the capital of France?",
+      "expected_doc_ids": [],
+      "expected_sections": [],
+      "should_refuse": true
+    }
+  ]
+}

@@ -22,3 +22,6 @@ clean:
 	rmdir /s /q .venv
 	rmdir /s /q .mypy_cache
 	rmdir /s /q .pytest_cache
+	
+eval:
+uv run pytest tests/unit/test_m4.py -v

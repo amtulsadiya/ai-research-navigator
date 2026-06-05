@@ -96,9 +96,7 @@ def fetch_blog_post(
     if not md_body:
         return False, "no extractor available (install trafilatura or html2text)"
 
-    header = (
-        f"# {title}\n\n" f"Source: {url}\n" f"Publisher: {source_label}\n\n" f"---\n\n"
-    )
+    header = f"# {title}\n\nSource: {url}\nPublisher: {source_label}\n\n---\n\n"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(header + md_body, encoding="utf-8")
     return True, f"{dest.stat().st_size} bytes"

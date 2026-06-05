@@ -1,3 +1,8 @@
 .venv/
 # Corpus documents (large files, not ours to redistribute)
 corpus/documents/
+.env
+__pycache__/
+*.pyc
+.coverage
+threshold_test.py

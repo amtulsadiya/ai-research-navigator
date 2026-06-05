@@ -200,6 +200,8 @@ def run_ingestion(
     results_total_chunks = 0
     results_errors: list[dict[str, str]] = []
 
+    assert client is not None, "QdrantClient must be initialized before ingestion loop"
+
     for i, meta in enumerate(metas, 1):
         logger.info(
             "ingesting_document",

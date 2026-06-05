@@ -28,8 +28,17 @@ class Settings(BaseSettings):
     chunk_overlap: int = Field(default=64)
 
     # Retrieval
+    # Retrieval
     top_k: int = Field(default=6)
-    similarity_threshold: float = Field(default=0.3)
+
+    similarity_threshold: float = Field(
+        default=0.525,
+        description=(
+            "Minimum cosine similarity for generation. "
+            "Tuned on 20-query dataset (10 valid, 10 invalid): 90% accuracy. "
+            "Re-tune in M4 evaluation with full 40-query golden set."
+        ),
+    )
 
 
 def get_settings() -> Settings:

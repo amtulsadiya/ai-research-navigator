@@ -63,6 +63,8 @@ module = [
     "qdrant_client",
     "qdrant_client.http",
     "qdrant_client.http.models",
+    "qdrant_client.http.exceptions",
+    "langchain_google_genai",
 ]
 ignore_missing_imports = true
 

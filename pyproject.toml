@@ -65,6 +65,9 @@ module = [
     "qdrant_client.http.models",
     "qdrant_client.http.exceptions",
     "langchain_google_genai",
+    "langchain_core.tools",
+    "langgraph.graph",
+    "langgraph.graph.state",
 ]
 ignore_missing_imports = true
 

@@ -157,11 +157,22 @@ ai-research-navigator/
 
 ## Known limitations
 
-- Re-ingestion takes ~60 minutes on CPU (bge-m3 is a 2.27GB model)
-- 0.525% of chunks are under 9 tokens (code-heavy Markdown files) — fix implemented but full re-ingestion pending
-- Similarity threshold (0.525) tuned on 20-query set; may not generalise to all query types
-- Google Gemini free tier limits full evaluation to ~20 queries/day
-- RLHF training examples in Llama 2 paper cause occasional false positives for human preference queries
+- Re-ingestion takes ~60 minutes on CPU 
+  (bge-m3 is a 2.27GB model)
+
+- 0.6% of chunks are under 20 tokens 
+  (code-heavy Markdown files) — fix implemented 
+  in chunker.py but full re-ingestion pending
+
+- Similarity threshold (0.525) tuned on 20-query 
+  set; may not generalise to all query types
+
+- Google Gemini free tier limits full evaluation 
+  to ~20 queries/day
+
+- RLHF training examples in Llama 2 paper cause 
+  occasional false positives for human preference 
+  queries (pizza scoring 0.585 > threshold 0.525)
 
 ## Environment variables
 

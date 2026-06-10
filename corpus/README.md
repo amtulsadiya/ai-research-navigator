@@ -1,89 +1,177 @@
-# AI Research Navigator — Corpus Package
+# AI Research Navigator
 
-This is the sealed corpus for the **AI Research Navigator** intern assignment. It contains 50 documents (or rather, *will* contain 50 once `complete_corpus.py` is run — see §3) plus a manifest.
+A citation-grounded RAG system for AI/ML learners. Ask questions about 50 curated AI/ML papers, courses, and blogs — get answers where every claim traces back to a real source.
 
-## 1. Layout
+## What it does
 
-```
-corpus/
-├── README.md                ← this file
-├── manifest.json            ← metadata for all 50 documents
-├── complete_corpus.py       ← script to fetch arXiv + lab blog content
-└── documents/
-    ├── arxiv/               ← 30 PDFs (populated by complete_corpus.py)
-    ├── hf-learn/            ← 12 markdown chapters (already present)
-    ├── lillog/              ← 5 markdown posts (already present)
-    └── lab-blogs/           ← 3 markdown posts (populated by complete_corpus.py)
-```
+- Answers questions about AI/ML research using 50 curated documents
+- Every factual claim carries an inline citation `[1][2]` linking to the source chunk
+- Refuses gracefully when the question is out of scope or confidence is low
+- Routes queries intelligently through 6 specialised agent nodes (LangGraph)
+- Supports concept explanations, paper deep-dives, comparisons, recent developments, and reading lists
 
-## 2. What is already in the zip
+## Stack
 
-| Source | Count | Format | Status |
-|---|---|---|---|
-| Hugging Face Learn (NLP, Agents, Deep RL) | 12 | `.md` | ✅ Included |
-| Lil'Log (Lilian Weng) | 5 | `.md` | ✅ Included |
-| arXiv papers | 30 | `.pdf` | ⏳ Fetched by `complete_corpus.py` |
-| Lab blog posts (Anthropic, OpenAI, DeepMind) | 3 | `.md` | ⏳ Fetched by `complete_corpus.py` |
-| **Total** | **50** | — | — |
+| Component | Technology |
+|---|---|
+| Vector store | Qdrant (local Docker) |
+| Embeddings | BAAI/bge-m3 (local, no API) |
+| LLM | Google Gemini 2.0 Flash |
+| Agent orchestration | LangGraph |
+| Config | pydantic-settings |
+| Logging | structlog |
+| Dependency management | uv |
 
-The HF Learn and Lil'Log content was assembled from each project's public GitHub source (`huggingface/course`, `huggingface/agents-course`, `huggingface/deep-rl-class`, `lilianweng/lilianweng.github.io`). Each chapter or unit was concatenated from its constituent pages/sections into a single Markdown file. Lil'Log posts were extracted from the published HTML and converted to Markdown; some footer cruft (share buttons, navigation links) remains and should be handled by the ingestion parser.
+## Prerequisites
 
-## 3. Completing the corpus
+- Python 3.11
+- Docker Desktop running
+- Google AI Studio API key ([get one free](https://aistudio.google.com/apikey))
+- uv installed (`pip install uv`)
 
-The arXiv and lab-blog domains were not reachable in the environment that built this package. Run the following on a machine with normal internet access:
+## Quick start
 
 ```bash
-# 1. Unzip
-unzip ai-research-navigator-corpus.zip
-cd ai-research-navigator-corpus
+# 1. Clone and enter
+git clone <repo-url>
+cd ai-research-navigator
 
 # 2. Install dependencies
+uv sync --all-extras
+
+# 3. Configure environment
+cp .env.example .env
+# Edit .env and add your GOOGLE_API_KEY
+
+# 4. Start Qdrant
+docker compose up -d
+
+# 5. Install pre-commit hooks
+uv run pre-commit install
+
+# 6. Fetch corpus documents
+cd corpus
 pip install requests trafilatura html2text
+python complete_corpus.py
+cd ..
 
-# 3. Run the completion script
-python3 complete_corpus.py
+# 7. Ingest corpus (takes ~60 min on CPU — bge-m3 embedding)
+uv run python -m research_navigator.ingest ingest
+
+# 8. Verify ingestion
+uv run python -m research_navigator.ingest stats
+
+# 9. Ask a question
+uv run python -m research_navigator.agents query "What is the attention mechanism?"
 ```
 
-The script:
-- Fetches all 30 arXiv PDFs from `https://arxiv.org/pdf/<id>.pdf`.
-- Fetches all 3 lab blog posts and converts them to Markdown.
-- Honours arXiv's request to pace bulk downloads (≥ 3 s between requests).
-- Identifies itself with a clear User-Agent.
-- Is idempotent — re-running it skips files already present.
-- Exits non-zero if any document fails to fetch.
+## Usage
 
-End-to-end runtime: roughly 3 minutes (30 arXiv papers × 3.5 s delay ≈ 1.75 min + downloads + 3 blog posts).
-
-## 4. Verifying the corpus before handing it to interns
-
-After `complete_corpus.py` finishes:
-
+### Ask a question
 ```bash
-# Every document in the manifest should have a corresponding file on disk
-python3 -c "
-import json, pathlib
-m = json.load(open('manifest.json'))
-missing = [d['local_path'] for d in m['documents'] if not pathlib.Path(d['local_path']).exists()]
-print(f'Missing: {len(missing)}')
-for p in missing: print(f'  {p}')
-"
+uv run python -m research_navigator.agents query "How does RLHF work?"
+uv run python -m research_navigator.agents query "Compare GPT and BERT"
+uv run python -m research_navigator.agents query "Recommend papers on transformers"
 ```
 
-Expected output: `Missing: 0`.
+### Test all 6 agent routes
+```bash
+uv run python -m research_navigator.agents test
+```
 
-## 5. Known caveats — please review
+### Visualise the agent graph
+```bash
+uv run python -m research_navigator.agents visualize
+```
 
-Two arXiv IDs in the manifest were flagged at curation time as "verify before use":
+### Ingestion commands
+```bash
+uv run python -m research_navigator.ingest ingest       # full corpus
+uv run python -m research_navigator.ingest validate     # check all files exist
+uv run python -m research_navigator.ingest stats        # collection stats
+uv run python -m research_navigator.ingest reindex --doc-ids arxiv-1706.03762  # single doc
+```
 
-- `arxiv-2408.00118` — Gemma 2 technical report. Confirm the ID resolves to the paper titled "Gemma 2: Improving Open Language Models at a Practical Size".
-- `arxiv-2501.12948` — DeepSeek-R1 paper. Confirm the ID resolves to "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning".
+### Run evaluation harness
+```bash
+make eval
+# or
+uv run python -m research_navigator.eval
+```
 
-If either fails verification, edit `manifest.json` to point to the correct ID and re-run `complete_corpus.py`. Easy substitutes: Phi-4 technical report, Qwen2.5 technical report, or a Llama 3.1/3.2/3.3 follow-up.
+### Run tests
+```bash
+make test
+# or
+uv run pytest tests/ -v
+```
 
-Lil'Log posts contain some residual HTML-to-Markdown noise (share buttons, tag links, navigation cruft at the end of each post). This is realistic — the ingestion pipeline will need to handle some markdown noise anyway. If you prefer cleaner inputs, you can manually trim the trailing navigation/share blocks from each `lillog/*.md` file.
+### Lint and type check
+```bash
+make lint
+```
 
-HF Learn course structures evolve over time. The chapter numbering and unit titles in `manifest.json` were correct as of the build date; if Hugging Face renames or restructures a chapter, the `source_url` in the manifest may 404. The local Markdown file is what counts for ingestion; the URL is only for citation rendering.
+## Project structure
 
-## 6. Re-distributing this corpus
+```
+ai-research-navigator/
+├── src/research_navigator/
+│   ├── config.py              # pydantic-settings config
+│   ├── logger.py              # structlog setup
+│   ├── ingest/                # M1: parsing, chunking, embedding, Qdrant upsert
+│   │   ├── models.py          # Pydantic data models
+│   │   ├── parser.py          # PDF + Markdown parsers
+│   │   ├── chunker.py         # Per-type chunking strategies
+│   │   ├── embedder.py        # bge-m3 local embeddings
+│   │   ├── qdrant_store.py    # Collection schema + upserts
+│   │   └── pipeline.py        # Ingestion orchestrator
+│   ├── retrieve/              # M2: query understanding + hybrid retrieval
+│   │   ├── query_understanding.py  # Filter extraction via Gemini
+│   │   ├── retriever.py       # Dense + sparse hybrid search
+│   │   └── pipeline.py        # Query orchestrator
+│   ├── generate/              # M2: citation building + generation
+│   │   ├── citation_builder.py     # Deduplication + formatting
+│   │   └── generator.py       # Gemini generation + refusal
+│   ├── agents/                # M3: LangGraph state machine
+│   │   ├── state.py           # AgentState TypedDict
+│   │   ├── tools.py           # corpus_metadata_lookup, get_current_year
+│   │   ├── nodes.py           # 7 agent nodes
+│   │   └── graph.py           # LangGraph graph builder
+│   └── eval/                  # M4: evaluation harness
+│       └── harness.py         # Metrics + report generator
+├── corpus/
+│   ├── manifest.json          # Document metadata
+│   ├── complete_corpus.py     # Fetch arXiv PDFs + blog posts
+│   └── documents/             # 50 documents (gitignored)
+├── eval/
+│   ├── golden_set.json        # 40 evaluation questions
+│   └── report.md              # Generated evaluation report
+├── tests/
+│   ├── unit/                  # Unit tests (no external services)
+│   └── acceptance/            # Acceptance tests (need API)
+├── docs/adr/                  # Architecture Decision Records
+├── docker-compose.yml         # Qdrant local instance
+├── Makefile                   # setup, lint, test, eval targets
+└── pyproject.toml             # Dependencies + tool config
+```
 
-The documents in this corpus are the work of their respective authors. They are included for the educational purpose of this internal intern assignment under fair-use understanding. **Do not re-distribute this package publicly.** When the system surfaces an answer to a learner, it must cite the original source URL, not paraphrase as if the wording were ours.
+## Known limitations
+
+- Re-ingestion takes ~60 minutes on CPU (bge-m3 is a 2.27GB model)
+- 0.525% of chunks are under 9 tokens (code-heavy Markdown files) — fix implemented but full re-ingestion pending
+- Similarity threshold (0.525) tuned on 20-query set; may not generalise to all query types
+- Google Gemini free tier limits full evaluation to ~20 queries/day
+- RLHF training examples in Llama 2 paper cause occasional false positives for human preference queries
+
+## Environment variables
+
+| Variable | Description | Default |
+| `GOOGLE_API_KEY` | Google AI Studio key | required |
+| `QDRANT_URL` | Qdrant server URL | `http://localhost:6333` |
+| `QDRANT_COLLECTION_NAME` | Collection name | `research_navigator` |
+| `EMBEDDING_MODEL` | HuggingFace model ID | `BAAI/bge-m3` |
+| `GENERATION_MODEL` | Gemini model name | `gemini-2.0-flash-lite` |
+| `CHUNK_SIZE` | Max tokens per chunk | `512` |
+| `CHUNK_OVERLAP` | Overlap tokens | `64` |
+| `TOP_K` | Chunks retrieved per query | `6` |
+| `SIMILARITY_THRESHOLD` | Refusal threshold | `0.525` |

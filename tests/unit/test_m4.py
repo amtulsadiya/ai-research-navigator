@@ -188,3 +188,24 @@ def test_generate_markdown_report() -> None:
     assert "config_b" in report
     assert "Precision" in report
     assert "Known Limitations" in report
+
+
+# uv run python -c "
+# from qdrant_client import QdrantClient
+# from qdrant_client.http import models as qmodels
+# client = QdrantClient(url='http://localhost:6333')
+# tiny = client.count(
+#     collection_name='research_navigator',
+#     count_filter=qmodels.Filter(
+#         must=[qmodels.FieldCondition(
+#             key='token_count',
+#             range=qmodels.Range(lte=20)
+#         )]
+#     ),
+#     exact=True
+# )
+# total = client.count(collection_name='research_navigator', exact=True)
+# print('Tiny chunks:', tiny.count)
+# print('Total:', total.count)
+# print('Tiny %:', round(tiny.count/total.count*100,1))
+# "
